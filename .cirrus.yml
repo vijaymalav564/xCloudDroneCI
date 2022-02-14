@@ -1,21 +1,22 @@
 env:
-    CIRRUS_WORKING_DIR: "/tmp/ci"
-    LLVM_NAME:
-    TG_TOKEN:
-    TG_CHAT_ID:
-    GH_USERNAME:
-    GH_EMAIL:
-    GH_TOKEN:
-    GH_PUSH_REPO_URL:    
-
+    CIRRUS_CLONE_DEPTH: 1 # No need to clone with whole history
+    rclone_config: "ENCRYPTED[ca074debef6ade0342a30265b02c6d25cd3508e9182b3cc84dfbb6d5211c0b58c800e1e2bb4d2a89bf44fe3c3f322c09"
 
 task:
-  name: "LLVM Toolchain Compiler"
-  timeout_in: 120m  
+  name: carbon
+  timeout_in: 120m
   container:
-      image: xyzuan/xdocker:latest
-      cpu: 8
-      memory: 32G
+    image: inok2341/anu:latest
+    cpu: 8
+    memory: 32G 
 
+  chmod_script:
+    - sudo chmod +x *
+  sync_script:
+    - ./sync
+  monitor_background_script:
+    - ./monitor
   build_script:
-      - bash llvm-tc_build.sh 
+    - ./build
+  upload_script:
+    - ./upload
